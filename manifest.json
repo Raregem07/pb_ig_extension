@@ -1,0 +1,63 @@
+{
+  "manifest_version": 2,
+  "name": "ProfileBuddy",
+  "short_name": "ProfileBuddy",
+  "description": "Instagram leads and data",
+  "version": "5.0.0",
+  "background": {
+    "scripts": [
+      "assets/js/jquery.js",
+      "assets/js/axios.js",
+      "background/fireNotification.js",
+      "background/main.js",
+      "background/changeHeaders.js"
+    ],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.instagram.com/*"
+      ],
+      "js": [
+        "assets/js/jquery.js",
+        "assets/js/axios.js",
+        "assets/js/sweetAlert.js",
+
+        "models/command.js",
+
+        "content/helper.js",
+        "content/main.js"
+      ]
+    }
+  ],
+  "default_locale":  "en",
+  "browser_action": {
+    "default_icon": "assets/img/grambuddy_mascot.png",
+    "default_title": "ProfileBuddy"
+  },
+  "icons": {
+    "48": "assets/img/icon48.png",
+    "128": "assets/img/icon128.png"
+  },
+  "permissions": [
+    "downloads",
+    "storage",
+    "https://i.instagram.com/*",
+    "https://data.profilebud.com/",
+    "https://ht.profilebud.com/",
+    "https://sdt.profilebud.com/",
+    "https://api.profilemate.com/*",
+    "unlimitedStorage",
+    "webRequestBlocking",
+    "webRequest",
+    "https://www.google-analytics.com/",
+    "https://*.cdninstagram.com/*",
+    "https://*.cdninstagram.net/*",
+    "https://*.fna.fbcdn.net/*"
+  ],
+  "web_accessible_resources": [
+    "inject/inject_script.js"
+  ],
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com 'sha256-Kt/s4X/Ekpk2yCCQ5eypl8O9wMhloX8DOdDsVw82XTg=' 'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU=' 'sha256-+VeZEl5AsVzOPcBzLgETuMOgz2Bc+ruZY5sKtogXQPs=' 'sha256-e5SFxFWkKovG40ixRdeHYo67IkAhU+sftPIwTEmfH3k=' 'sha256-TrJA1SgixVdnS2eZ6Otoxli+j62QNKMfThZzrnMiwIE='; object-src 'self';"
+}
