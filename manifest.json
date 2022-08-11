@@ -14,10 +14,14 @@
     ],
     "persistent": true
   },
+  "externally_connectable": {
+    "matches": ["https://localhost:3000/*"]
+  },
   "content_scripts": [
     {
       "matches": [
-        "https://www.instagram.com/*"
+        "https://www.instagram.com/*",
+        "https://localhost:3000/*"
       ],
       "js": [
         "assets/js/jquery.js",
@@ -48,6 +52,7 @@
     "https://ht.profilebud.com/",
     "https://sdt.profilebud.com/",
     "https://api.profilemate.com/*",
+    "https://localhost:3000/*",
     "unlimitedStorage",
     "webRequestBlocking",
     "webRequest",

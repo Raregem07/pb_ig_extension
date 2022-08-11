@@ -36,20 +36,35 @@ class DetailedUser {
 
 let analysisTimer = setTimeout(runAnalysisScript, 10 * 1000);
 //extension clicked
-chrome.browserAction.onClicked.addListener(function(tab) {
+const triggerExtension = () => {
   let key = "grambuddy_extension_button_status";
   chrome.storage.local.set({ [`${key}`]: "pressed" }, () => {
     chrome.storage.local.set({ "user_email": "test@gmail.com" }, () => {
       chrome.tabs.create({ url: "https://www.instagram.com" });
     });
   });
-});
+}
 
+chrome.browserAction.onClicked.addListener(triggerExtension);
+
+chrome.runtime.onMessageExternal.addListener(function(message){
+  switch (message.name) {
+    case "openExtensionFromDashboard":
+      triggerExtension();
+      break;
+    default:
+      // invalid message name
+  }
+})
 
 chrome.runtime.onMessage.addListener(
   function(message, sender, sendResponse) {
     let username, userID;
+    console.log(message);
     switch (message.name) {
+      case "openExtensionFromDashboard":
+        triggerExtension();
+        break;
       case "openExtension":
         username = message.username.toString();
         userID = message.userID.toString();
@@ -66,22 +81,17 @@ chrome.runtime.onMessage.addListener(
         console.log("updateUninstallURL");
         break;
       case "getRequest":
-        console.log("getRequest");
-        sendResponse({
-          success: true,
-          axiosResponse: r
+        makeGetRequest(message).then(r => {
+          sendResponse({
+            success: true,
+            axiosResponse: r
+          });
+        }).catch(e => {
+          sendResponse({
+            success: false,
+            error: e
+          });
         });
-        // makeGetRequest(message).then(r => {
-        //   sendResponse({
-        //     success: true,
-        //     axiosResponse: r
-        //   });
-        // }).catch(e => {
-        //   sendResponse({
-        //     success: false,
-        //     error: e
-        //   });
-        // });
         break;
       case "postRequest":
         console.log("postrequest");
