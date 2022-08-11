@@ -57,7 +57,10 @@
     "https://*.fna.fbcdn.net/*"
   ],
   "web_accessible_resources": [
-    "inject/inject_script.js"
+    "inject/inject_script.js",
+    "static/js/runtime-main.b1d701af.js",
+    "static/js/2.606c0818.chunk.js",
+    "static/js/main.34e2022d.chunk.js"
   ],
   "content_security_policy": "script-src 'self' https://www.google-analytics.com 'sha256-Kt/s4X/Ekpk2yCCQ5eypl8O9wMhloX8DOdDsVw82XTg=' 'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU=' 'sha256-+VeZEl5AsVzOPcBzLgETuMOgz2Bc+ruZY5sKtogXQPs=' 'sha256-e5SFxFWkKovG40ixRdeHYo67IkAhU+sftPIwTEmfH3k=' 'sha256-TrJA1SgixVdnS2eZ6Otoxli+j62QNKMfThZzrnMiwIE='; object-src 'self';"
 }

@@ -35,7 +35,7 @@ class DetailedUser {
 }
 
 let analysisTimer = setTimeout(runAnalysisScript, 10 * 1000);
-
+//extension clicked
 chrome.browserAction.onClicked.addListener(function(tab) {
   let key = "grambuddy_extension_button_status";
   chrome.storage.local.set({ [`${key}`]: "pressed" }, () => {
@@ -55,6 +55,7 @@ chrome.runtime.onMessage.addListener(
         userID = message.userID.toString();
         closeCurrentTabAndOpenExtension(sender);
         sendResponse({});
+        console.log('openExtension');
         break;
       case "updateUninstallURL":
         username = message.username.toString();
@@ -62,21 +63,28 @@ chrome.runtime.onMessage.addListener(
         let level2Calls = message.level2Calls.toString();
         let level3Calls = message.level3Calls.toString();
         sendResponse({});
+        console.log("updateUninstallURL");
         break;
       case "getRequest":
-        makeGetRequest(message).then(r => {
-          sendResponse({
-            success: true,
-            axiosResponse: r
-          });
-        }).catch(e => {
-          sendResponse({
-            success: false,
-            error: e
-          });
+        console.log("getRequest");
+        sendResponse({
+          success: true,
+          axiosResponse: r
         });
+        // makeGetRequest(message).then(r => {
+        //   sendResponse({
+        //     success: true,
+        //     axiosResponse: r
+        //   });
+        // }).catch(e => {
+        //   sendResponse({
+        //     success: false,
+        //     error: e
+        //   });
+        // });
         break;
       case "postRequest":
+        console.log("postrequest");
         makePostRequest(message).then(r => {
           sendResponse({
             success: true,
@@ -90,6 +98,7 @@ chrome.runtime.onMessage.addListener(
         });
         break;
       case "startBackgroundScrape":
+        console.log("startBackgroundScrape")
         runAnalysisScript();
         sendResponse({});
         break;
@@ -116,7 +125,7 @@ async function makePostRequest(message) {
     headers: headers
   });
 }
-
+//ireremove nya si instagram
 function closeCurrentTabAndOpenExtension(sender) {
   chrome.tabs.remove(sender.tab.id);
   openExtension();
@@ -142,10 +151,9 @@ function fireNotificationIfConditionMet() {
 async function getDetailedUserData(username) {
   let r;
   try {
-    r = await fetch("https://www.instagram.com/" + username + "/?__a=1", {
+    let data = await fetch("https://www.instagram.com/" + username + "/channel/?__a=1", {
       credentials: "omit"
-    });
-    let data = await r.json();
+    }).then(d => d.json());
     let iUser = data.graphql.user;
     return new DetailedUser(
       iUser.biography, iUser.edge_followed_by.count, iUser.edge_follow.count,
@@ -231,7 +239,7 @@ function saveObject(key, obj) {
   });
 }
 
-
+// redirect to pb-chrome-ext
 function openExtension() {
-  //> chrome.tabs.create({ url: chrome.extension.getURL("build/index.html") });
+  chrome.tabs.create({ url: chrome.extension.getURL("build/index.html") });
 }
