@@ -1,10 +1,14 @@
-let igButton = document.getElementById("openExtensionFromDashboard");
+igButton = document.getElementById("openExtensionFromDashboard");
 
-igButton.onEventAddListener("click", () => {
-    chrome.runtime.sendMessage(
+console.log(document.title);
+
+igButton.addEventListener("click", () => {
+    /* chrome.runtime.sendMessage(
         { 
             name: "openExtension", 
             userID: data.config.viewerId, 
             username: data.config.viewer.username  }
-    );
+    ); */
+    console.log("sent a click message to open extension.")
+    chrome.runtime.sendMessage({name: "openExtensionFromDashboard"});
 })

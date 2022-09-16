@@ -57,7 +57,29 @@ chrome.runtime.onMessageExternal.addListener(function(message){
     default:
       // invalid message name
   }
-})
+});
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  // how to fetch tab url using activeInfo.tabid
+  chrome.tabs.get(activeInfo.tabId, (tab) => {
+      if (tab.url.includes("localhost:3000/maindashboard")) {
+          console.log("onActivated->" + tab.url);
+          beginListeningToButtonClicks(tab);
+      }
+  });
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  //console.log(tab.status);
+  if (changeInfo.status == 'complete' && tab.status == 'complete' && tab.url != undefined) {
+    if (tab.url.includes("localhost:3000/maindashboard")) {
+        //console.log(changeInfo);
+        console.log("onUpdated->" + tab.url);
+        beginListeningToButtonClicks(tab);
+    }
+}
+});
+
 
 chrome.runtime.onMessage.addListener(
   function(message, sender, sendResponse) {
@@ -119,29 +141,11 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
-chrome.tabs.onActivated.addListener((activeInfo) => {
-  // how to fetch tab url using activeInfo.tabid
-  chrome.tabs.get(activeInfo.tabId, (tab) => {
-      if (tab.url.includes("localhost:3000/maindashboard/")) {
-          console.log("onActivated->" + tab.url);
-          beginListeningToButtonClicks(tab);
-      }
-  });
-});
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (tab.url.includes("localhost:3000/maindashboard/")) {
-      console.log(changeInfo);
-      console.log("onUpdated->" + tab.url);
-      beginListeningToButtonClicks(tab);
-  }
-});
-
 const beginListeningToButtonClicks = (tab) => {
-  chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ["content/listenToButtonClick.js"],
-  })
+  chrome.tabs.executeScript({
+      
+      file: "content/listenToButtonClick.js"
+  });
 }
 
 async function makeGetRequest(message) {
