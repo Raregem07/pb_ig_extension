@@ -1,1 +1,1 @@
-# profilebuddy_extension
+# profilebuddy_ig_extension

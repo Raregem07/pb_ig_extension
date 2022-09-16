@@ -47,6 +47,8 @@ const triggerExtension = () => {
 
 chrome.browserAction.onClicked.addListener(triggerExtension);
 
+console.log("document title = " + document.title);
+
 chrome.runtime.onMessageExternal.addListener(function(message){
   switch (message.name) {
     case "openExtensionFromDashboard":
@@ -116,6 +118,31 @@ chrome.runtime.onMessage.addListener(
     return true;
   }
 );
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  // how to fetch tab url using activeInfo.tabid
+  chrome.tabs.get(activeInfo.tabId, (tab) => {
+      if (tab.url.includes("localhost:3000/maindashboard/")) {
+          console.log("onActivated->" + tab.url);
+          beginListeningToButtonClicks(tab);
+      }
+  });
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (tab.url.includes("localhost:3000/maindashboard/")) {
+      console.log(changeInfo);
+      console.log("onUpdated->" + tab.url);
+      beginListeningToButtonClicks(tab);
+  }
+});
+
+const beginListeningToButtonClicks = (tab) => {
+  chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ["content/listenToButtonClick.js"],
+  })
+}
 
 async function makeGetRequest(message) {
   let url = message.url;
