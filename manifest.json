@@ -26,7 +26,8 @@
       "matches": [
         "https://www.instagram.com/*",
         "https://localhost:3000/*",
-        "https://localhost:3001/*"
+        "https://localhost:3001/*",
+        "https://igdashboard.profilebuddy.io/*"
       ],
       "js": [
         "assets/js/jquery.js",
