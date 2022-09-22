@@ -1,0 +1,4 @@
+FOR DEPLOYMENT
+
+- Make sure that the two-> tab.url.includes("https://app.profilebuddy.io/maindashboard") 
+  are uncommented in background/main.js lines 65 and 76

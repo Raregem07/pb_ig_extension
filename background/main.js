@@ -62,7 +62,8 @@ chrome.runtime.onMessageExternal.addListener(function(message){
 chrome.tabs.onActivated.addListener((activeInfo) => {
   // how to fetch tab url using activeInfo.tabid
   chrome.tabs.get(activeInfo.tabId, (tab) => {
-      if (tab.url.includes("localhost:3000/maindashboard")) {
+      if (tab.url.includes("https://app.profilebuddy.io/maindashboard") || tab.url.includes("localhost:3000/maindashboard")) {
+      //if (tab.url.includes("localhost:3000/maindashboard")) {
           console.log("onActivated->" + tab.url);
           beginListeningToButtonClicks(tab);
       }
@@ -72,7 +73,8 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   //console.log(tab.status);
   if (changeInfo.status == 'complete' && tab.status == 'complete' && tab.url != undefined) {
-    if (tab.url.includes("localhost:3000/maindashboard")) {
+    if (tab.url.includes("https://app.profilebuddy.io/maindashboard") || tab.url.includes("localhost:3000/maindashboard")) {
+    // if (tab.url.includes("localhost:3000/maindashboard")) {
         //console.log(changeInfo);
         console.log("onUpdated->" + tab.url);
         beginListeningToButtonClicks(tab);
@@ -261,7 +263,7 @@ async function runAnalysisScript() {
   if (totalUsernames === 0) {
     numberOfTimesScrapeShouldHappen = 1;
   }
-  analysisTimer = setTimeout(runAnalysisScript, Math.floor(14400 * 1000 / numberOfTimesScrapeShouldHappen ))
+  analysisTimer = setTimeout(runAnalysisScript, Math.floor(14400 * 1000 / numberOfTimesScrapeShouldHappen ));
 }
 
 function getObject(key) {
