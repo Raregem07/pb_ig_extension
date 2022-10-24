@@ -4,7 +4,7 @@ let initialData;
 
 function injectScript(injectScriptFilename) {
   var s = document.createElement("script");
-  s.src = chrome.extension.getURL(injectScriptFilename);
+  s.src = chrome.runtime.getURL(injectScriptFilename);
   (document.head || document.documentElement).appendChild(s);
 }
 

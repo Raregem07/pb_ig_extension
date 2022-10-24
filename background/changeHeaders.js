@@ -19,7 +19,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
     // In the main window and frames
     types: ["xmlhttprequest"]
   },
-  ["blocking", "requestHeaders"]
+  ["requestHeaders"]
 );
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
@@ -37,5 +37,5 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
     urls: ["https://*.cdninstagram.net/*","https://*.fna.fbcdn.net/*", "https://*.cdninstagram.com/*",]
     // In the main window and frames
   },
-  ["blocking", "requestHeaders", "extraHeaders"]
+  ["requestHeaders", "extraHeaders"]
 );

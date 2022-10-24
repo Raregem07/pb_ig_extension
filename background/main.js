@@ -45,11 +45,12 @@ const triggerExtension = () => {
   });
 }
 
-chrome.browserAction.onClicked.addListener(triggerExtension);
+chrome.action.onClicked.addListener(triggerExtension);
 
-console.log("document title = " + document.title);
+// console.log("document title = " + document.title);
 
 chrome.runtime.onMessageExternal.addListener(function(message){
+  console.log(messagae.name);
   switch (message.name) {
     case "openExtensionFromDashboard":
       triggerExtension();
@@ -107,6 +108,7 @@ chrome.runtime.onMessage.addListener(
         console.log("updateUninstallURL");
         break;
       case "getRequest":
+        console.log("get request bitch");
         makeGetRequest(message).then(r => {
           sendResponse({
             success: true,
@@ -144,9 +146,11 @@ chrome.runtime.onMessage.addListener(
 );
 
 const beginListeningToButtonClicks = (tab) => {
-  chrome.tabs.executeScript({
-      
-      file: "content/listenToButtonClick.js"
+  chrome.scripting.executeScript({
+      target: {
+        tabId: tab.id
+      },
+      files: ["content/listenToButtonClick.js"]
   });
 }
 
@@ -170,7 +174,7 @@ async function makePostRequest(message) {
 }
 //ireremove nya si instagram
 function closeCurrentTabAndOpenExtension(sender) {
-  chrome.tabs.remove(sender.tab.id);
+  // chrome.tabs.remove(sender.tab.id);
   openExtension();
 }
 
@@ -197,6 +201,7 @@ async function getDetailedUserData(username) {
     let data = await fetch("https://www.instagram.com/" + username + "/channel/?__a=1", {
       credentials: "omit"
     }).then(d => d.json());
+
     let iUser = data.graphql.user;
     return new DetailedUser(
       iUser.biography, iUser.edge_followed_by.count, iUser.edge_follow.count,
@@ -284,5 +289,5 @@ function saveObject(key, obj) {
 
 // redirect to pb-chrome-ext
 function openExtension() {
-  chrome.tabs.create({ url: chrome.extension.getURL("build/index.html") });
+  chrome.tabs.create({ url: chrome.runtime.getURL("build/index.html") });
 }
